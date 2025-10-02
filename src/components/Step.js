@@ -1,103 +1,64 @@
 import React from "react";
 
-const Step = ({
-  currentStep,
-  formData,
-  handleChange,
-  handlePrev,
-  handleNext,
-  handleSubmit,
-}) => {
+const Step = ({ stepNumber, currentStep, onNext, onPrev, onSubmit }) => {
+  const isActive = currentStep === stepNumber;
+
   return (
-    <div id={`step${currentStep}`}>
-      {currentStep == 1 && (
+    <div
+      className={`step ${isActive ? "active" : ""}`}
+      id={`step${stepNumber}`}
+    >
+      {stepNumber === 1 && (
         <>
-          <h1>Customer Details</h1>
           <label htmlFor="first_name">First Name:</label>
-          <input
-            type="text"
-            id="first_name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          <br></br>
-          <br></br>
+          <input type="text" id="first_name" name="first_name" required />
+
           <label htmlFor="last_name">Last Name:</label>
-          <input
-            type="text"
-            id="last_name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-          <br></br>
-          <br></br>
+          <input type="text" id="last_name" name="last_name" required />
         </>
       )}
-      {currentStep == 2 && (
+
+      {stepNumber === 2 && (
         <>
-          <h1>Car Details</h1>
-          <label htmlFor="car_price">Make:</label>
-          <input
-            type="text"
-            id="car_price"
-            name="make"
-            value={formData.make}
-            onChange={handleChange}
-          />
-          <br></br>
-          <br></br>
-          <label htmlFor="model">Model:</label>
-          <input
-            type="text"
-            id="model"
-            name="model"
-            value={formData.model}
-            onChange={handleChange}
-          />
-          <br></br>
-          <br></br>
+          <label htmlFor="model">Car Model:</label>
+          <input type="text" id="model" name="model" required />
+
+          <label htmlFor="car_price">Car Price:</label>
+          <input type="number" id="car_price" name="car_price" required />
         </>
       )}
-      {currentStep == 3 && (
+
+      {stepNumber === 3 && (
         <>
-          <h1>Payment Details</h1>
-          <label htmlFor="card-info">Credit Card Number:</label>
+          <label htmlFor="card_info">Card Number:</label>
+          <input type="text" id="card_info" name="card_info" required />
+
+          <label htmlFor="expiry_date">Expiry Date (MM/YY):</label>
           <input
-            id="card-info"
-            type="tel"
-            pattern="[0-9\s]{13,19}"
-            minLength="0"
-            maxLength="12"
-            name="card_info"
-            inputMode="numeric"
-            placeholder="xxxx xxxx xxxx xxxx"
-            required
-            value={formData.card_info}
-            onChange={handleChange}
-          />
-          <br></br>
-          <br></br>
-          <label htmlFor="expiry-date">Expiry Date:</label>
-          <input
-            id="expiry-date"
-            type="date"
+            type="text"
+            id="expiry_date"
             name="expiry_date"
-            value={formData.expiry_date}
-            onChange={handleChange}
-          ></input>
-          <br></br>
-          <br></br>
+            pattern="\d{2}/\d{2}"
+            placeholder="MM/YY"
+            required
+          />
         </>
       )}
-      {currentStep > 1 && (
-        <button onClick={() => handlePrev(currentStep)}>Previous</button>
-      )}
-      {currentStep < 3 && (
-        <button onClick={() => handleNext(currentStep)}>Next</button>
-      )}
-      {currentStep == 3 && <button onClick={handleSubmit}>Submit</button>}
+
+      <div>
+        {stepNumber !== 1 && (
+          <button type="button" onClick={onPrev}>
+            Previous
+          </button>
+        )}
+        {stepNumber !== 3 ? (
+          <button type="button" onClick={onNext}>
+            Next
+          </button>
+        ) : (
+          <button type="submit">Submit</button>
+        )}
+      </div>
     </div>
   );
 };

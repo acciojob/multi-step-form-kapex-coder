@@ -1,47 +1,50 @@
 import React, { useState } from "react";
-import Step from "./Step.js";
+import "./../styles/App.css";
+import Step from "./Step"; // Make sure to adjust the import path
 
-const App = () => {
-  const [index, setIndex] = useState(1);
+const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    make: "",
-    model: "",
-    card_info: "",
-    expiry_date: "",
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const nextStep = () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    }
   };
 
-  const handlePrev = (index) => {
-    setCurrentStep(index - 1);
-  };
-  const handleNext = (index) => {
-    setCurrentStep(index + 1);
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents page reload
-    console.log("Form Data Submitted:", formData);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert("Form submitted successfully!");
+    // You can add AJAX or other logic for form submission here
   };
 
   return (
-    <div>
+    <form id="multiStepForm" onSubmit={handleSubmit}>
       <Step
-        formData={formData}
+        stepNumber={1}
         currentStep={currentStep}
-        handleChange={handleChange}
-        handlePrev={handlePrev}
-        handleNext={handleNext}
-        handleSubmit={handleSubmit}
+        onNext={nextStep}
+        onPrev={prevStep}
       />
-    </div>
+      <Step
+        stepNumber={2}
+        currentStep={currentStep}
+        onNext={nextStep}
+        onPrev={prevStep}
+      />
+      <Step
+        stepNumber={3}
+        currentStep={currentStep}
+        onNext={nextStep}
+        onPrev={prevStep}
+      />
+    </form>
   );
 };
 
-export default App;
+export default MultiStepForm;
