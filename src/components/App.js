@@ -1,11 +1,43 @@
 
-import React from "react";
-import './../styles/App.css';
+import React,{useState} from "react";
+import Step from './Step.js'
 
 const App = () => {
+  const [index,setIndex]=useState(1);
+  const [formData,setFormData]=useState({
+    firstName:"",
+     lastName:"",
+    make:"",
+    model:"",
+    card_info:"",
+    expiry_date:""
+
+});
+
+const handleChange=(e)=>{
+  const {name,value}=e.target;
+  setFormData({...formData,[name]:value})
+}
+
+  const handlePrev=(index)=>{
+    setIndex(index-1);
+  }
+    const handleNext=(index)=>{
+    setIndex(index+1);
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault(); // Prevents page reload
+console.log("Form Data Submitted:", formData);
+  }
+
   return (
     <div>
-        {/* Do not remove the main div */}
+      <Step formData={formData} index={index}
+      handleChange={handleChange}
+      handlePrev={handlePrev}
+      handleNext={handleNext}
+      handleSubmit={handleSubmit}/>
     </div>
   )
 }
